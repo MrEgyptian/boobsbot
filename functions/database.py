@@ -39,7 +39,7 @@ class Database:
     def _init_engine(self):
         self.engine = create_engine(self.database_url)
         Base.metadata.create_all(self.engine)
-        self.Session = sessionmaker(bind=self.engine)
+        self.Session = sessionmaker(bind=self.engine,expire_on_commit=False)
 
     def get_session(self):
         """Create a new session."""

@@ -35,4 +35,4 @@ A: No 🚫 This bot will never flood your chats with ads like others do.
 A: Reach out at **@YourSupportUsername** for support or feedback.  
 """
 
-    await event.reply(faq_text)
+    await event.reply(FAQ_MESSAGE)

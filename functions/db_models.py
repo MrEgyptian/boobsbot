@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, TIMESTAMP, ForeignKey, Boolean, Table
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func,text
 
 Base = declarative_base()
 
@@ -26,7 +26,7 @@ class User(Base):
     is_admin = Column(Boolean, default=False)
 
     boob_size = Column(Integer, default=0)  # current size in cm
-    last_growth = Column(TIMESTAMP, server_default=func.current_timestamp())  # last /grow
+    last_growth = Column(TIMESTAMP, server_default=text("'1970-01-01 00:00:00'") )  # last /grow
     streak = Column(Integer, default=0)  # daily growth streak
 
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
@@ -70,6 +70,6 @@ class GrowthHistory(Base):
 
     growth_amount = Column(Integer, nullable=False)  # change in size for that day (-2 to +10)
     total_size = Column(Integer, nullable=False)  # size after applying growth
-    grown_at = Column(TIMESTAMP, server_default=func.current_timestamp())  # timestamp of growth
+    grown_at = Column(TIMESTAMP, server_default=text("'1970-01-01 00:00:00'") )  # timestamp of growth
 
     user = relationship("User", back_populates="history")
