@@ -1,15 +1,9 @@
 psycopg2
-av
-ffmpeg
-yt_dlp
 telethon
 pyyaml
 colorama
-requests
 pillow
-bs4
 aiohttp
 arabic-reshaper
 python-bidi
-requests
 sqlalchemy
