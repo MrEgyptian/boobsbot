@@ -1,0 +1,14 @@
+start - Welcome message and overview of the bot  
+help - Instructions on how to use the bot  
+grow - Grow your boobs once a day and climb the leaderboard  
+top - Show the biggest boobs in the chat  
+pvp - Challenge friends to a growth duel and bet centimeters  
+boobs_of_the_day - Daily election for bonus growth  
+import - Import progress from other growing bots  
+settings - Customize your experience (if applicable)  
+favorites - Save your favorite videos for easy access  
+history - View your growth and battle history  
+contact - Get in touch for support or feedback  
+faq - Frequently asked questions about the bot  
+support - If you enjoy using @boobsgrowingbot and want to help keep it running, consider making a donation! Every little bit helps and is greatly appreciated! 🌟  
+loan - Reset your size to zero on credit and pay it off gradually  
