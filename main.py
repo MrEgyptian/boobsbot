@@ -70,12 +70,14 @@ command_pattern=rf"\{prefix}(\w+)(.*)"
 logging.info('Loading commands & aliases')
 with open('alias.yaml', 'r',encoding="utf-8") as file:
     strings = yaml.safe_load(file)
+
 handlers={}
-for filename in os.listdir('url_handlers'):
+for filename in os.listdir('inline_handlers'):
     if filename.endswith('.py'):
         handler_name = filename.split('.')[0]
-        handler_module = __import__(f'url_handlers.{handler_name}', fromlist=[''])
+        handler_module = __import__(f'inline_handlers.{handler_name}', fromlist=[''])
         if hasattr(handler_module, "register"):
+            
             handler_module.register(client)
 commands = {}
 commands_folder = 'commands'
@@ -116,7 +118,9 @@ async def handle_callback(event):
     #print(event.query)
     if event.query:
         #command = event.pattern_match.group(1)
+        client.commands=commands
         event.db=db
+        event.client.db=db
         data = event.query.data.decode('utf-8')
         EV=data.split('\x20')
         args="\x20".join(EV[1:])
