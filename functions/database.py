@@ -3,7 +3,7 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.engine.url import make_url
-
+from sqlalchemy_utils import drop_database
 from functions.db_models import User, Group, GrowthHistory, Settings, Base
 
 
@@ -37,7 +37,7 @@ class Database:
                 raise
 
     def _init_engine(self):
-        self.engine = create_engine(self.database_url)
+        self.engine = create_engine(self.database_url,isolation_level="AUTOCOMMIT")
         Base.metadata.create_all(self.engine)
         self.Session = sessionmaker(bind=self.engine,expire_on_commit=False)
 
@@ -168,6 +168,30 @@ class Database:
             if not include_banned:
                 query = query.filter(User.banned == False)
             return query.count()
+    def clear_db(self):
+        """Drop the current database (force disconnecting active sessions)."""
+        url = make_url(self.database_url)
+        db_name = url.database
+
+        # Connect to 'postgres' instead of the target DB
+        admin_url = url.set(database="postgres")
+
+        engine = create_engine(
+            admin_url,
+            isolation_level="AUTOCOMMIT"  # required for DROP DATABASE
+        )
+
+        with engine.connect() as conn:
+            # Terminate any connections still using this DB
+            conn.execute(text(f"""
+                SELECT pg_terminate_backend(pid)
+                FROM pg_stat_activity
+                WHERE datname = '{db_name}'
+                AND pid <> pg_backend_pid();
+            """))
+            # Drop the database
+            conn.execute(text(f'DROP DATABASE "{db_name}"'))
+            self.__init__(self.database_url)
 
 if __name__ == "__main__":
     DATABASE_URL = "postgresql://postgres:1@127.0.0.1:5432/boobs_bot"
